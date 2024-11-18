@@ -94,7 +94,114 @@ class Widget(QWidget):
         self.criar_experimentos()
         self.dicionario_exercicios = {}
         self.criar_dicionario_exercicios()
+        self.ui.pushButtonBancoDados.clicked.connect(self.enviar_informacoes_banco_dados)
 
+
+    def enviar_informacoes_banco_dados(self):
+        # Itera sobre os dados em 'data.txt'
+        time_intervals = {}
+        with open('log_serial.txt') as arquivo:
+            linhas = arquivo.readlines()
+            for linha in linhas:
+                entry = linha.split(",")
+                id_totem = int(entry[0])  # IDTOTEM
+                id_value = int(entry[1])  # ID
+                btn = int(entry[2])       # BTN
+                timestamp = int(entry[3]) # TIMESTAMP
+
+                # Inicializa o IDTOTEM no dicionário se ainda não existe
+                if id_totem not in time_intervals:
+                    time_intervals[id_totem] = {}
+
+                # Inicializa o ID no dicionário de IDTOTEM se ainda não existe
+                if id_value not in time_intervals[id_totem]:
+                    time_intervals[id_totem][id_value] = []
+
+                # Se BTN=1, armazena como tempo inicial; se BTN=2, armazena como tempo final
+                if btn == 1:
+                    # Adiciona uma nova entrada para o tempo inicial sem tempo final ainda
+                    time_intervals[id_totem][id_value].append([timestamp, None])
+                elif btn == 2:
+                    # Atualiza o último tempo inicial com o tempo final correspondente
+                    for interval in time_intervals[id_totem][id_value]:
+                        if interval[1] is None:  # Encontra o tempo inicial sem um final correspondente
+                            interval[1] = timestamp
+                            break
+
+            print(time_intervals)
+
+            for id_totem in time_intervals:
+                    for id_value in time_intervals[id_totem]:
+                        time_intervals[id_totem][id_value] = [
+                            tuple(interval) for interval in time_intervals[id_totem][id_value]
+                        ]
+
+            for id_totem, ids in time_intervals.items():
+                    print(f"\nIDTOTEM: {id_totem}")
+                    print(f"{'ID':<5}{'Tempo Inicial (TIMESTAMP)':<25}{'Tempo Final (TIMESTAMP)':<25}")
+                    print("-" * 55)
+
+
+
+                    # Exibe os intervalos de tempo para cada ID dentro do IDTOTEM
+                    for id_value, intervals in ids.items():
+                        for interval in intervals:
+                            tempo_inicial = interval[0]
+                            tempo_final = interval[1] if interval[1] is not None else "N/A"
+
+                            for indice, exp in enumerate(self.experimentos):
+                                if(id_value == exp._id):
+                                    if(id_totem == self.dicionario_exercicios["Corrida"]):
+                                        self.experimentos[indice].update_corridas(tempo_final - tempo_inicial)
+                                    else:
+                                        for nome_exercicio, tempos in exp.exercicios.items():
+                                            if(id_totem == self.dicionario_exercicios[nome_exercicio]):
+                                                self.experimentos[indice].exercicios[nome_exercicio] = tempo_final - tempo_inicial
+
+
+
+                            # Imprime os valores de timestamp para o ID dentro do IDTOTEM
+                            print(f"{id_value:<5}{tempo_inicial:<25}{tempo_final:<25}")
+
+            for exp in self.experimentos:
+                print(exp)
+
+        conexao = sqlite3.connect('banco de dados.db')
+        cursor = conexao.cursor()
+
+        for exp in self.experimentos:
+            # Conectando ao banco de dados
+
+
+            # Obtendo o ID a partir do nome
+
+            # Inserir dados diários
+            tempos_exercios = [0]
+            tempos_exercios = tempos_exercios*16
+
+            #Tempo_total = Corrida + Burpee + Lunge + Farmer_Walk + Abdominal + Jump_Squat + Medball_Alto + \
+            #Medball_Solo + Terra_remada
+
+            cursor.execute("INSERT INTO experimentos (ID_Pessoa, Data, Burpee, Lunge, Farmer_Walk,\
+            Abdominal, Jump_Squat, Medball_Alto, Medball_Solo, Terra_remada,Corrida1, Corrida2,\
+            Corrida3,Corrida4,Corrida5,Corrida6,Corrida7,Corrida8) \
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", \
+            (exp.ID_Pessoa,exp.data,exp.exercicios["Burpee"],exp.exercicios["Lunge"],exp.exercicios["Farmer_Walk"],\
+            exp.exercicios["Abdominal"],exp.exercicios["Jump_Squat"], exp.exercicios["Medball_Alto"],\
+            exp.exercicios["Medball_Solo"],exp.exercicios["Terra_Remada"],exp.exercicios["Corrida"][0],\
+            exp.exercicios["Corrida"][1],exp.exercicios["Corrida"][2],exp.exercicios["Corrida"][3],\
+            exp.exercicios["Corrida"][4],exp.exercicios["Corrida"][5],exp.exercicios["Corrida"][6],\
+            exp.exercicios["Corrida"][7]))
+
+
+        # Confirmar a alteração
+        conexao.commit()
+
+        # Fechar a conexão
+        conexao.close()
+
+        with open('log_serial.txt', 'w') as file:
+            pass  # Não faz nada, apenas limpa o conteúdo
 
     def cadastro(self):
         nome = self.ui.lineEditNome.text()
@@ -301,7 +408,6 @@ class Widget(QWidget):
             ''', (linha[1],))
 
             # Obter o resultado da consulta
-            print(linha[1])
             resultado = cursor.fetchone()
             sheet['A' + str(i + 2)] = resultado[0]
 
@@ -363,112 +469,9 @@ class Widget(QWidget):
             time.sleep(1)
             self.log_serial_data_to_file('log_serial.txt')
 
-
-            # Itera sobre os dados em 'data.txt'
-            time_intervals = {}
-            with open('log_serial.txt') as arquivo:
-                linhas = arquivo.readlines()
-                for linha in linhas:
-                    entry = linha.split(",")
-                    id_totem = int(entry[0])  # IDTOTEM
-                    id_value = int(entry[1])  # ID
-                    btn = int(entry[2])       # BTN
-                    timestamp = int(entry[3]) # TIMESTAMP
-
-                    # Inicializa o IDTOTEM no dicionário se ainda não existe
-                    if id_totem not in time_intervals:
-                        time_intervals[id_totem] = {}
-
-                    # Inicializa o ID no dicionário de IDTOTEM se ainda não existe
-                    if id_value not in time_intervals[id_totem]:
-                        time_intervals[id_totem][id_value] = []
-
-                    # Se BTN=1, armazena como tempo inicial; se BTN=2, armazena como tempo final
-                    if btn == 1:
-                        # Adiciona uma nova entrada para o tempo inicial sem tempo final ainda
-                        time_intervals[id_totem][id_value].append([timestamp, None])
-                    elif btn == 2:
-                        # Atualiza o último tempo inicial com o tempo final correspondente
-                        for interval in time_intervals[id_totem][id_value]:
-                            if interval[1] is None:  # Encontra o tempo inicial sem um final correspondente
-                                interval[1] = timestamp
-                                break
-
-                print(time_intervals)
-
-                for id_totem in time_intervals:
-                        for id_value in time_intervals[id_totem]:
-                            time_intervals[id_totem][id_value] = [
-                                tuple(interval) for interval in time_intervals[id_totem][id_value]
-                            ]
-
-                for id_totem, ids in time_intervals.items():
-                        print(f"\nIDTOTEM: {id_totem}")
-                        print(f"{'ID':<5}{'Tempo Inicial (TIMESTAMP)':<25}{'Tempo Final (TIMESTAMP)':<25}")
-                        print("-" * 55)
-
-
-
-                        # Exibe os intervalos de tempo para cada ID dentro do IDTOTEM
-                        for id_value, intervals in ids.items():
-                            for interval in intervals:
-                                tempo_inicial = interval[0]
-                                tempo_final = interval[1] if interval[1] is not None else "N/A"
-
-                                for indice, exp in enumerate(self.experimentos):
-                                    if(id_value == exp._id):
-                                        if(id_totem == self.dicionario_exercicios["Corrida"]):
-                                            self.experimentos[indice].update_corridas(tempo_final - tempo_inicial)
-                                        else:
-                                            for nome_exercicio, tempos in exp.exercicios.items():
-                                                if(id_totem == self.dicionario_exercicios[nome_exercicio]):
-                                                    self.experimentos[indice].exercicios[nome_exercicio] = tempo_final - tempo_inicial
-
-
-
-                                # Imprime os valores de timestamp para o ID dentro do IDTOTEM
-                                print(f"{id_value:<5}{tempo_inicial:<25}{tempo_final:<25}")
-
-                for exp in self.experimentos:
-                    print(exp)
-
-
-
-        for exp in self.experimentos:
-            # Conectando ao banco de dados
-            conexao = sqlite3.connect('banco de dados.db')
-            cursor = conexao.cursor()
-
-            # Obtendo o ID a partir do nome
-
-            # Inserir dados diários
-            tempos_exercios = [0]
-            tempos_exercios = tempos_exercios*16
-
-            #Tempo_total = Corrida + Burpee + Lunge + Farmer_Walk + Abdominal + Jump_Squat + Medball_Alto + \
-            #Medball_Solo + Terra_remada
-
-            cursor.execute("INSERT INTO experimentos (ID_Pessoa, Data, Burpee, Lunge, Farmer_Walk,\
-            Abdominal, Jump_Squat, Medball_Alto, Medball_Solo, Terra_remada,Corrida1, Corrida2,\
-            Corrida3,Corrida4,Corrida5,Corrida6,Corrida7,Corrida8) \
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", \
-            (exp.ID_Pessoa,exp.data,exp.exercicios["Burpee"],exp.exercicios["Lunge"],exp.exercicios["Farmer_Walk"],\
-            exp.exercicios["Abdominal"],exp.exercicios["Jump_Squat"], exp.exercicios["Medball_Alto"],\
-            exp.exercicios["Medball_Solo"],exp.exercicios["Terra_Remada"],exp.exercicios["Corrida"][0],\
-            exp.exercicios["Corrida"][1],exp.exercicios["Corrida"][2],exp.exercicios["Corrida"][3],\
-            exp.exercicios["Corrida"][4],exp.exercicios["Corrida"][5],exp.exercicios["Corrida"][6],\
-            exp.exercicios["Corrida"][7]))
-
-
-            # Confirmar a alteração
-            conexao.commit()
-
-            # Fechar a conexão
-            conexao.close()
-
             print("Solitação concluída")
 
-        self.atualizar_lista_totens_recebidos()
+            self.atualizar_lista_totens_recebidos()
 
     def atualizar_nomes_participantes(self):
         # Conectar ao banco de dados
@@ -529,7 +532,7 @@ class Widget(QWidget):
 
     def log_serial_data_to_file(self, output_file):
         # Abre o arquivo em modo de escrita
-        with open(output_file, 'w') as file:
+        with open(output_file, 'a') as file:
             while True:
                 if self.serial_port.in_waiting > 0:
                     # Lê uma linha da porta serial
@@ -556,7 +559,6 @@ class Widget(QWidget):
         with open('Configuração dos totens.txt') as arquivo:
             linhas = arquivo.readlines()
             for linha in linhas:
-                print(linha.split(",")[0])
                 self.dicionario_exercicios[linha.split(",")[0]] = int(linha.split(",")[1])
 
 if __name__ == "__main__":
