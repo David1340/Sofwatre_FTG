@@ -1,0 +1,10 @@
+Burpee,1,3
+Lunge,1,4
+Farmer_Walk,2,3
+Abdominal,2,4
+Jump_Squat,3,3
+Medball_Alto,3,4
+Medball_Solo,3,4
+Terra_Remada,3,4
+Corrida,4
+Corrida,5
