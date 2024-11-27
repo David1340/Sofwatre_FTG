@@ -24,11 +24,19 @@ class Ui_Widget(object):
     def setupUi(self, Widget):
         if not Widget.objectName():
             Widget.setObjectName(u"Widget")
-        Widget.resize(969, 744)
+        Widget.resize(905, 720)
+        self.labelAvisoCadastro = QLabel(Widget)
+        self.labelAvisoCadastro.setObjectName(u"labelAvisoCadastro")
+        self.labelAvisoCadastro.setGeometry(QRect(410, 221, 16, 16))
+        self.labelAvisoCadastro.setStyleSheet(u"color: rgb(255, 0, 0);")
         self.gridLayout_23 = QGridLayout(Widget)
         self.gridLayout_23.setObjectName(u"gridLayout_23")
-        self.gridLayout_22 = QGridLayout()
-        self.gridLayout_22.setObjectName(u"gridLayout_22")
+        self.verticalSpacer_9 = QSpacerItem(20, 193, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
+
+        self.gridLayout_23.addItem(self.verticalSpacer_9, 0, 0, 1, 1)
+
+        self.gridLayout_21 = QGridLayout()
+        self.gridLayout_21.setObjectName(u"gridLayout_21")
         self.gridLayout_11 = QGridLayout()
         self.gridLayout_11.setObjectName(u"gridLayout_11")
         self.gridLayout_5 = QGridLayout()
@@ -161,33 +169,47 @@ class Ui_Widget(object):
         self.gridLayout_11.addLayout(self.gridLayout_10, 1, 0, 1, 1)
 
 
-        self.gridLayout_22.addLayout(self.gridLayout_11, 0, 0, 1, 1)
+        self.gridLayout_21.addLayout(self.gridLayout_11, 0, 0, 1, 1)
 
-        self.gridLayout_21 = QGridLayout()
-        self.gridLayout_21.setObjectName(u"gridLayout_21")
+        self.horizontalSpacer_20 = QSpacerItem(13, 14, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+
+        self.gridLayout_21.addItem(self.horizontalSpacer_20, 0, 1, 1, 1)
+
         self.gridLayout_20 = QGridLayout()
         self.gridLayout_20.setObjectName(u"gridLayout_20")
-        self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
-
-        self.gridLayout_20.addItem(self.verticalSpacer, 0, 0, 1, 1)
-
         self.gridLayout_12 = QGridLayout()
         self.gridLayout_12.setObjectName(u"gridLayout_12")
         self.horizontalSpacer_6 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
-        self.gridLayout_12.addItem(self.horizontalSpacer_6, 0, 0, 1, 1)
+        self.gridLayout_12.addItem(self.horizontalSpacer_6, 0, 1, 1, 1)
+
+        self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
+
+        self.gridLayout_12.addItem(self.verticalSpacer, 1, 0, 1, 1)
 
         self.calendarWidget = QCalendarWidget(Widget)
         self.calendarWidget.setObjectName(u"calendarWidget")
         self.calendarWidget.setMaximumSize(QSize(14777215, 14777215))
+        self.calendarWidget.setLayoutDirection(Qt.LeftToRight)
+        self.calendarWidget.setAutoFillBackground(True)
+        self.calendarWidget.setGridVisible(False)
+        self.calendarWidget.setSelectionMode(QCalendarWidget.SingleSelection)
+        self.calendarWidget.setHorizontalHeaderFormat(QCalendarWidget.ShortDayNames)
+        self.calendarWidget.setNavigationBarVisible(True)
+        self.calendarWidget.setDateEditEnabled(True)
 
-        self.gridLayout_12.addWidget(self.calendarWidget, 1, 0, 1, 1)
+        self.gridLayout_12.addWidget(self.calendarWidget, 1, 1, 1, 2)
+
+        self.verticalSpacer_11 = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
+
+        self.gridLayout_12.addItem(self.verticalSpacer_11, 2, 0, 1, 1)
+
+        self.horizontalSpacer_22 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+
+        self.gridLayout_12.addItem(self.horizontalSpacer_22, 2, 2, 1, 1)
 
 
-        self.gridLayout_20.addLayout(self.gridLayout_12, 0, 1, 1, 1)
-
-
-        self.gridLayout_21.addLayout(self.gridLayout_20, 0, 0, 1, 1)
+        self.gridLayout_20.addLayout(self.gridLayout_12, 0, 0, 1, 1)
 
         self.groupBox = QGroupBox(Widget)
         self.groupBox.setObjectName(u"groupBox")
@@ -257,67 +279,158 @@ class Ui_Widget(object):
         self.gridLayout_19.addLayout(self.gridLayout_18, 0, 0, 1, 1)
 
 
-        self.gridLayout_21.addWidget(self.groupBox, 1, 0, 1, 1)
+        self.gridLayout_20.addWidget(self.groupBox, 1, 0, 1, 1)
 
 
-        self.gridLayout_22.addLayout(self.gridLayout_21, 0, 1, 1, 1)
+        self.gridLayout_21.addLayout(self.gridLayout_20, 0, 2, 1, 1)
 
 
-        self.gridLayout_23.addLayout(self.gridLayout_22, 0, 0, 2, 2)
+        self.gridLayout_23.addLayout(self.gridLayout_21, 0, 1, 3, 1)
 
-        self.labelAvisoCadastro = QLabel(Widget)
-        self.labelAvisoCadastro.setObjectName(u"labelAvisoCadastro")
-        self.labelAvisoCadastro.setStyleSheet(u"color: rgb(255, 0, 0);")
+        self.verticalSpacer_14 = QSpacerItem(20, 193, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
 
-        self.gridLayout_23.addWidget(self.labelAvisoCadastro, 1, 1, 1, 1)
+        self.gridLayout_23.addItem(self.verticalSpacer_14, 0, 2, 1, 1)
+
+        self.verticalSpacer_8 = QSpacerItem(20, 46, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
+
+        self.gridLayout_23.addItem(self.verticalSpacer_8, 1, 0, 1, 1)
+
+        self.verticalSpacer_13 = QSpacerItem(20, 46, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
+
+        self.gridLayout_23.addItem(self.verticalSpacer_13, 1, 2, 1, 1)
+
+        self.verticalSpacer_7 = QSpacerItem(20, 193, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
+
+        self.gridLayout_23.addItem(self.verticalSpacer_7, 2, 0, 1, 1)
+
+        self.verticalSpacer_10 = QSpacerItem(20, 193, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
+
+        self.gridLayout_23.addItem(self.verticalSpacer_10, 2, 2, 1, 1)
 
         self.frame = QFrame(Widget)
         self.frame.setObjectName(u"frame")
         self.frame.setFrameShape(QFrame.StyledPanel)
         self.frame.setFrameShadow(QFrame.Sunken)
         self.frame.setLineWidth(0)
-        self.label_2 = QLabel(self.frame)
-        self.label_2.setObjectName(u"label_2")
-        self.label_2.setGeometry(QRect(660, 20, 271, 151))
-        self.label_2.setPixmap(QPixmap(u"imagens/FTG.jpeg"))
-        self.label_2.setScaledContents(True)
-        self.label_5 = QLabel(self.frame)
-        self.label_5.setObjectName(u"label_5")
-        self.label_5.setGeometry(QRect(270, 40, 391, 141))
-        self.label_5.setPixmap(QPixmap(u"imagens/LOGOS-20241002T010036Z-001/LOGOS/g3743.png"))
-        self.label_5.setScaledContents(True)
-        self.label = QLabel(self.frame)
+        self.gridLayout_22 = QGridLayout(self.frame)
+        self.gridLayout_22.setObjectName(u"gridLayout_22")
+        self.horizontalSpacer_11 = QSpacerItem(22, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+
+        self.gridLayout_22.addItem(self.horizontalSpacer_11, 0, 0, 2, 2)
+
+        self.verticalSpacer_16 = QSpacerItem(20, 33, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
+
+        self.gridLayout_22.addItem(self.verticalSpacer_16, 0, 2, 2, 1)
+
+        self.widget = QWidget(self.frame)
+        self.widget.setObjectName(u"widget")
+        self.gridLayout_24 = QGridLayout(self.widget)
+        self.gridLayout_24.setObjectName(u"gridLayout_24")
+        self.label = QLabel(self.widget)
         self.label.setObjectName(u"label")
-        self.label.setGeometry(QRect(10, 30, 251, 141))
-        self.label.setPixmap(QPixmap(u"imagens/calistenia.jpeg"))
+        self.label.setPixmap(QPixmap(u"imagens/calistenia.png"))
         self.label.setScaledContents(True)
+
+        self.gridLayout_24.addWidget(self.label, 0, 0, 1, 1)
+
+
+        self.gridLayout_22.addWidget(self.widget, 0, 3, 2, 1)
+
+        self.widget_3 = QWidget(self.frame)
+        self.widget_3.setObjectName(u"widget_3")
+        self.gridLayout_25 = QGridLayout(self.widget_3)
+        self.gridLayout_25.setObjectName(u"gridLayout_25")
+        self.label_5 = QLabel(self.widget_3)
+        self.label_5.setObjectName(u"label_5")
+        self.label_5.setEnabled(True)
+        self.label_5.setPixmap(QPixmap(u"imagens/Inst1.png"))
+        self.label_5.setScaledContents(True)
+
+        self.gridLayout_25.addWidget(self.label_5, 0, 0, 1, 1)
+
+
+        self.gridLayout_22.addWidget(self.widget_3, 0, 4, 2, 2)
+
+        self.widget_2 = QWidget(self.frame)
+        self.widget_2.setObjectName(u"widget_2")
+        self.gridLayout_26 = QGridLayout(self.widget_2)
+        self.gridLayout_26.setObjectName(u"gridLayout_26")
+        self.label_2 = QLabel(self.widget_2)
+        self.label_2.setObjectName(u"label_2")
+        self.label_2.setPixmap(QPixmap(u"imagens/FTG.png"))
+        self.label_2.setScaledContents(True)
+
+        self.gridLayout_26.addWidget(self.label_2, 0, 0, 1, 1)
+
+
+        self.gridLayout_22.addWidget(self.widget_2, 0, 6, 2, 1)
+
+        self.verticalSpacer_3 = QSpacerItem(20, 149, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
+
+        self.gridLayout_22.addItem(self.verticalSpacer_3, 0, 7, 2, 2)
+
+        self.horizontalSpacer_13 = QSpacerItem(30, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+
+        self.gridLayout_22.addItem(self.horizontalSpacer_13, 1, 8, 1, 2)
+
+        self.horizontalSpacer_12 = QSpacerItem(15, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+
+        self.gridLayout_22.addItem(self.horizontalSpacer_12, 2, 0, 2, 1)
+
+        self.verticalSpacer_18 = QSpacerItem(20, 50, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
+
+        self.gridLayout_22.addItem(self.verticalSpacer_18, 2, 1, 2, 2)
+
+        self.horizontalSpacer_7 = QSpacerItem(190, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+
+        self.gridLayout_22.addItem(self.horizontalSpacer_7, 2, 3, 1, 1)
+
+        self.horizontalSpacer_8 = QSpacerItem(182, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+
+        self.gridLayout_22.addItem(self.horizontalSpacer_8, 2, 4, 1, 1)
+
+        self.horizontalSpacer_9 = QSpacerItem(181, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+
+        self.gridLayout_22.addItem(self.horizontalSpacer_9, 2, 5, 1, 1)
+
+        self.horizontalSpacer_10 = QSpacerItem(159, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+
+        self.gridLayout_22.addItem(self.horizontalSpacer_10, 2, 6, 1, 1)
+
+        self.verticalSpacer_6 = QSpacerItem(20, 50, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
+
+        self.gridLayout_22.addItem(self.verticalSpacer_6, 2, 7, 2, 2)
+
+        self.horizontalSpacer_14 = QSpacerItem(15, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+
+        self.gridLayout_22.addItem(self.horizontalSpacer_14, 2, 9, 2, 1)
+
+        self.horizontalSpacer_19 = QSpacerItem(190, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+
+        self.gridLayout_22.addItem(self.horizontalSpacer_19, 3, 3, 1, 1)
+
         self.label_4 = QLabel(self.frame)
         self.label_4.setObjectName(u"label_4")
-        self.label_4.setGeometry(QRect(120, 210, 731, 16))
+        font = QFont()
+        font.setPointSize(8)
+        self.label_4.setFont(font)
+        self.label_4.setLayoutDirection(Qt.LeftToRight)
+        self.label_4.setAlignment(Qt.AlignCenter)
 
-        self.gridLayout_23.addWidget(self.frame, 2, 0, 1, 2)
+        self.gridLayout_22.addWidget(self.label_4, 3, 4, 1, 2)
 
-        self.frame.raise_()
-        self.PushButtonGerarRelatorio.raise_()
-        self.PushButtonGerarPlanilha.raise_()
-        self.calendarWidget.raise_()
-        self.PushButtonTotem.raise_()
-        self.spinBoxIDTotem.raise_()
-        self.ComboBoxNomes.raise_()
-        self.Atualizacoes.raise_()
-        self.PushButtonLimparAtualizacoes.raise_()
-        self.lineEditNome.raise_()
-        self.label_7.raise_()
-        self.label_8.raise_()
-        self.lineEditIdade.raise_()
-        self.PushButtonCadastro.raise_()
-        self.labelAvisoCadastro.raise_()
-        self.comboBoxUSB.raise_()
-        self.pushButtonUSB.raise_()
-        self.pushButtonUSB2.raise_()
-        self.pushButtonBancoDados.raise_()
-        self.groupBox.raise_()
-        self.frame.raise_()
+        self.horizontalSpacer_21 = QSpacerItem(159, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+
+        self.gridLayout_22.addItem(self.horizontalSpacer_21, 3, 6, 1, 1)
+
+        self.widget_3.raise_()
+        self.widget_2.raise_()
+        self.label_5.raise_()
+        self.label_4.raise_()
+        self.widget.raise_()
+
+        self.gridLayout_23.addWidget(self.frame, 3, 0, 1, 3)
+
 
         self.retranslateUi(Widget)
 
@@ -326,6 +439,7 @@ class Ui_Widget(object):
 
     def retranslateUi(self, Widget):
         Widget.setWindowTitle(QCoreApplication.translate("Widget", u"Functional Training Group", None))
+        self.labelAvisoCadastro.setText("")
         self.PushButtonGerarPlanilha.setText(QCoreApplication.translate("Widget", u"Gerar Planilha", None))
         self.PushButtonGerarRelatorio.setText(QCoreApplication.translate("Widget", u"Gerar Relat\u00f3rio", None))
         self.PushButtonTotem.setText(QCoreApplication.translate("Widget", u"Solicitar Informa\u00e7\u00f5es do Totem", None))
@@ -341,10 +455,9 @@ class Ui_Widget(object):
         self.label_7.setText(QCoreApplication.translate("Widget", u"Nome:", None))
         self.label_8.setText(QCoreApplication.translate("Widget", u"Idade:", None))
         self.PushButtonCadastro.setText(QCoreApplication.translate("Widget", u"Cadastrar", None))
-        self.labelAvisoCadastro.setText("")
-        self.label_2.setText("")
-        self.label_5.setText("")
         self.label.setText("")
-        self.label_4.setText(QCoreApplication.translate("Widget", u"                                    Desenvolvido pelo Grupo de Pesquisa em Instrumenta\u00e7\u00e3o da UFS. 2024. ", None))
+        self.label_5.setText("")
+        self.label_2.setText("")
+        self.label_4.setText(QCoreApplication.translate("Widget", u"Desenvolvido pelo Grupo de Pesquisa em Instrumenta\u00e7\u00e3o da UFS.", None))
     # retranslateUi
 
