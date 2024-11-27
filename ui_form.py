@@ -25,10 +25,6 @@ class Ui_Widget(object):
         if not Widget.objectName():
             Widget.setObjectName(u"Widget")
         Widget.resize(905, 720)
-        self.labelAvisoCadastro = QLabel(Widget)
-        self.labelAvisoCadastro.setObjectName(u"labelAvisoCadastro")
-        self.labelAvisoCadastro.setGeometry(QRect(410, 221, 16, 16))
-        self.labelAvisoCadastro.setStyleSheet(u"color: rgb(255, 0, 0);")
         self.gridLayout_23 = QGridLayout(Widget)
         self.gridLayout_23.setObjectName(u"gridLayout_23")
         self.verticalSpacer_9 = QSpacerItem(20, 193, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
@@ -177,40 +173,6 @@ class Ui_Widget(object):
 
         self.gridLayout_20 = QGridLayout()
         self.gridLayout_20.setObjectName(u"gridLayout_20")
-        self.gridLayout_12 = QGridLayout()
-        self.gridLayout_12.setObjectName(u"gridLayout_12")
-        self.horizontalSpacer_6 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
-
-        self.gridLayout_12.addItem(self.horizontalSpacer_6, 0, 1, 1, 1)
-
-        self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
-
-        self.gridLayout_12.addItem(self.verticalSpacer, 1, 0, 1, 1)
-
-        self.calendarWidget = QCalendarWidget(Widget)
-        self.calendarWidget.setObjectName(u"calendarWidget")
-        self.calendarWidget.setMaximumSize(QSize(14777215, 14777215))
-        self.calendarWidget.setLayoutDirection(Qt.LeftToRight)
-        self.calendarWidget.setAutoFillBackground(True)
-        self.calendarWidget.setGridVisible(False)
-        self.calendarWidget.setSelectionMode(QCalendarWidget.SingleSelection)
-        self.calendarWidget.setHorizontalHeaderFormat(QCalendarWidget.ShortDayNames)
-        self.calendarWidget.setNavigationBarVisible(True)
-        self.calendarWidget.setDateEditEnabled(True)
-
-        self.gridLayout_12.addWidget(self.calendarWidget, 1, 1, 1, 2)
-
-        self.verticalSpacer_11 = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
-
-        self.gridLayout_12.addItem(self.verticalSpacer_11, 2, 0, 1, 1)
-
-        self.horizontalSpacer_22 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
-
-        self.gridLayout_12.addItem(self.horizontalSpacer_22, 2, 2, 1, 1)
-
-
-        self.gridLayout_20.addLayout(self.gridLayout_12, 0, 0, 1, 1)
-
         self.groupBox = QGroupBox(Widget)
         self.groupBox.setObjectName(u"groupBox")
         self.gridLayout_19 = QGridLayout(self.groupBox)
@@ -280,6 +242,46 @@ class Ui_Widget(object):
 
 
         self.gridLayout_20.addWidget(self.groupBox, 1, 0, 1, 1)
+
+        self.gridLayout_12 = QGridLayout()
+        self.gridLayout_12.setObjectName(u"gridLayout_12")
+        self.horizontalSpacer_6 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+
+        self.gridLayout_12.addItem(self.horizontalSpacer_6, 0, 1, 1, 1)
+
+        self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
+
+        self.gridLayout_12.addItem(self.verticalSpacer, 1, 0, 1, 1)
+
+        self.calendarWidget = QCalendarWidget(Widget)
+        self.calendarWidget.setObjectName(u"calendarWidget")
+        self.calendarWidget.setMaximumSize(QSize(14777215, 14777215))
+        self.calendarWidget.setLayoutDirection(Qt.LeftToRight)
+        self.calendarWidget.setAutoFillBackground(True)
+        self.calendarWidget.setGridVisible(False)
+        self.calendarWidget.setSelectionMode(QCalendarWidget.SingleSelection)
+        self.calendarWidget.setHorizontalHeaderFormat(QCalendarWidget.ShortDayNames)
+        self.calendarWidget.setNavigationBarVisible(True)
+        self.calendarWidget.setDateEditEnabled(True)
+
+        self.gridLayout_12.addWidget(self.calendarWidget, 1, 1, 1, 2)
+
+        self.verticalSpacer_11 = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
+
+        self.gridLayout_12.addItem(self.verticalSpacer_11, 2, 0, 1, 1)
+
+        self.horizontalSpacer_22 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+
+        self.gridLayout_12.addItem(self.horizontalSpacer_22, 2, 2, 1, 1)
+
+
+        self.gridLayout_20.addLayout(self.gridLayout_12, 0, 0, 1, 1)
+
+        self.labelAvisoCadastro = QLabel(Widget)
+        self.labelAvisoCadastro.setObjectName(u"labelAvisoCadastro")
+        self.labelAvisoCadastro.setStyleSheet(u"color: rgb(255, 0, 0);")
+
+        self.gridLayout_20.addWidget(self.labelAvisoCadastro, 2, 0, 1, 1)
 
 
         self.gridLayout_21.addLayout(self.gridLayout_20, 0, 2, 1, 1)
@@ -425,7 +427,6 @@ class Ui_Widget(object):
 
         self.widget_3.raise_()
         self.widget_2.raise_()
-        self.label_5.raise_()
         self.label_4.raise_()
         self.widget.raise_()
 
@@ -439,7 +440,6 @@ class Ui_Widget(object):
 
     def retranslateUi(self, Widget):
         Widget.setWindowTitle(QCoreApplication.translate("Widget", u"Functional Training Group", None))
-        self.labelAvisoCadastro.setText("")
         self.PushButtonGerarPlanilha.setText(QCoreApplication.translate("Widget", u"Gerar Planilha", None))
         self.PushButtonGerarRelatorio.setText(QCoreApplication.translate("Widget", u"Gerar Relat\u00f3rio", None))
         self.PushButtonTotem.setText(QCoreApplication.translate("Widget", u"Solicitar Informa\u00e7\u00f5es do Totem", None))
@@ -455,6 +455,7 @@ class Ui_Widget(object):
         self.label_7.setText(QCoreApplication.translate("Widget", u"Nome:", None))
         self.label_8.setText(QCoreApplication.translate("Widget", u"Idade:", None))
         self.PushButtonCadastro.setText(QCoreApplication.translate("Widget", u"Cadastrar", None))
+        self.labelAvisoCadastro.setText("")
         self.label.setText("")
         self.label_5.setText("")
         self.label_2.setText("")

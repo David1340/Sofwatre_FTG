@@ -207,6 +207,7 @@ class Widget(QWidget):
         nome = self.ui.lineEditNome.text()
         idade = self.ui.lineEditIdade.text()
         if (not nome.strip()) and (not idade.strip()):  # strip() remove espaços em branco antes de checar
+            self.ui.labelAvisoCadastro.setStyleSheet("QLabel {color : red; }")
             self.ui.labelAvisoCadastro.setText("Todos os campos de texto estão vazios!")
         elif(nome == "cadastros"):
             # Conectando ao banco de dados
@@ -226,7 +227,7 @@ class Widget(QWidget):
 
             # Fechar a conexão
             conexao.close()
-
+            self.ui.labelAvisoCadastro.setStyleSheet("QLabel {color : blue; }")
             self.ui.labelAvisoCadastro.setText("Os participantes foram cadastrados.")
             self.atualizar_nomes_participantes()
 
@@ -246,7 +247,7 @@ class Widget(QWidget):
 
             # Fechar a conexão
             conexao.close()
-
+            self.ui.labelAvisoCadastro.setStyleSheet("QLabel {color : blue; }")
             self.ui.labelAvisoCadastro.setText("O participante foi cadastrado na base de dados.")
             self.atualizar_nomes_participantes()
 

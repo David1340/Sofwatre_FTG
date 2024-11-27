@@ -225,6 +225,92 @@ border-style: inset;
      </item>
      <item row="0" column="2">
       <layout class="QGridLayout" name="gridLayout_20">
+       <item row="1" column="0">
+        <widget class="QGroupBox" name="groupBox">
+         <property name="title">
+          <string>Cadastro de novos participantes</string>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_19">
+          <item row="0" column="0">
+           <layout class="QGridLayout" name="gridLayout_18">
+            <item row="0" column="0">
+             <layout class="QGridLayout" name="gridLayout_14">
+              <item row="0" column="0">
+               <layout class="QGridLayout" name="gridLayout_13">
+                <item row="0" column="0">
+                 <widget class="QLabel" name="label_7">
+                  <property name="text">
+                   <string>Nome:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="1">
+                 <spacer name="horizontalSpacer_2">
+                  <property name="orientation">
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>40</width>
+                    <height>20</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+               </layout>
+              </item>
+              <item row="1" column="0">
+               <widget class="QLineEdit" name="lineEditNome"/>
+              </item>
+             </layout>
+            </item>
+            <item row="1" column="0">
+             <layout class="QGridLayout" name="gridLayout_17">
+              <item row="0" column="0">
+               <layout class="QGridLayout" name="gridLayout_15">
+                <item row="1" column="0">
+                 <widget class="QLineEdit" name="lineEditIdade"/>
+                </item>
+                <item row="0" column="0">
+                 <widget class="QLabel" name="label_8">
+                  <property name="text">
+                   <string>Idade:</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item row="0" column="1">
+               <layout class="QGridLayout" name="gridLayout_16">
+                <item row="0" column="0">
+                 <spacer name="horizontalSpacer_5">
+                  <property name="orientation">
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>40</width>
+                    <height>20</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+                <item row="1" column="0">
+                 <widget class="QPushButton" name="PushButtonCadastro">
+                  <property name="text">
+                   <string>Cadastrar</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+             </layout>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+       </item>
        <item row="0" column="0">
         <layout class="QGridLayout" name="gridLayout_12">
          <item row="0" column="1">
@@ -312,90 +398,14 @@ border-style: inset;
          </item>
         </layout>
        </item>
-       <item row="1" column="0">
-        <widget class="QGroupBox" name="groupBox">
-         <property name="title">
-          <string>Cadastro de novos participantes</string>
+       <item row="2" column="0">
+        <widget class="QLabel" name="labelAvisoCadastro">
+         <property name="styleSheet">
+          <string notr="true">color: rgb(255, 0, 0);</string>
          </property>
-         <layout class="QGridLayout" name="gridLayout_19">
-          <item row="0" column="0">
-           <layout class="QGridLayout" name="gridLayout_18">
-            <item row="0" column="0">
-             <layout class="QGridLayout" name="gridLayout_14">
-              <item row="0" column="0">
-               <layout class="QGridLayout" name="gridLayout_13">
-                <item row="0" column="0">
-                 <widget class="QLabel" name="label_7">
-                  <property name="text">
-                   <string>Nome:</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="0" column="1">
-                 <spacer name="horizontalSpacer_2">
-                  <property name="orientation">
-                   <enum>Qt::Horizontal</enum>
-                  </property>
-                  <property name="sizeHint" stdset="0">
-                   <size>
-                    <width>40</width>
-                    <height>20</height>
-                   </size>
-                  </property>
-                 </spacer>
-                </item>
-               </layout>
-              </item>
-              <item row="1" column="0">
-               <widget class="QLineEdit" name="lineEditNome"/>
-              </item>
-             </layout>
-            </item>
-            <item row="1" column="0">
-             <layout class="QGridLayout" name="gridLayout_17">
-              <item row="0" column="0">
-               <layout class="QGridLayout" name="gridLayout_15">
-                <item row="1" column="0">
-                 <widget class="QLineEdit" name="lineEditIdade"/>
-                </item>
-                <item row="0" column="0">
-                 <widget class="QLabel" name="label_8">
-                  <property name="text">
-                   <string>Idade:</string>
-                  </property>
-                 </widget>
-                </item>
-               </layout>
-              </item>
-              <item row="0" column="1">
-               <layout class="QGridLayout" name="gridLayout_16">
-                <item row="0" column="0">
-                 <spacer name="horizontalSpacer_5">
-                  <property name="orientation">
-                   <enum>Qt::Horizontal</enum>
-                  </property>
-                  <property name="sizeHint" stdset="0">
-                   <size>
-                    <width>40</width>
-                    <height>20</height>
-                   </size>
-                  </property>
-                 </spacer>
-                </item>
-                <item row="1" column="0">
-                 <widget class="QPushButton" name="PushButtonCadastro">
-                  <property name="text">
-                   <string>Cadastrar</string>
-                  </property>
-                 </widget>
-                </item>
-               </layout>
-              </item>
-             </layout>
-            </item>
-           </layout>
-          </item>
-         </layout>
+         <property name="text">
+          <string/>
+         </property>
         </widget>
        </item>
       </layout>
@@ -742,7 +752,6 @@ border-style: inset;
      </layout>
      <zorder>widget_3</zorder>
      <zorder>widget_2</zorder>
-     <zorder>label_5</zorder>
      <zorder>label_4</zorder>
      <zorder>widget</zorder>
      <zorder>verticalSpacer_3</zorder>
@@ -762,22 +771,6 @@ border-style: inset;
     </widget>
    </item>
   </layout>
-  <widget class="QLabel" name="labelAvisoCadastro">
-   <property name="geometry">
-    <rect>
-     <x>410</x>
-     <y>221</y>
-     <width>16</width>
-     <height>16</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">color: rgb(255, 0, 0);</string>
-   </property>
-   <property name="text">
-    <string/>
-   </property>
-  </widget>
  </widget>
  <resources/>
  <connections/>
