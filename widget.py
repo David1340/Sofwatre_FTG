@@ -360,10 +360,10 @@ class Widget(QWidget):
             conexao = sqlite3.connect('banco de dados.db')
             cursor = conexao.cursor()
 
-            with open('cadastros.txt') as arquivo:
+            with open('cadastros.csv') as arquivo:
                 linhas = arquivo.readlines()
                 for linha in linhas:
-                    dados = linha.split(",")
+                    dados = linha.strip().split(",")
                     cursor.execute("INSERT INTO Pessoas (Nome, Idade) \
                     VALUES (?, ?)", \
                     (dados[0],dados[1]))
