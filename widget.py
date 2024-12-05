@@ -353,14 +353,12 @@ class Widget(QWidget):
         nome = self.ui.lineEditNome.text()
         idade = self.ui.lineEditIdade.text()
         if (not nome.strip()) and (not idade.strip()):  # strip() remove espaços em branco antes de checar
-            self.ui.labelAvisoCadastro.setStyleSheet("QLabel {color : red; }")
-            self.ui.labelAvisoCadastro.setText("Todos os campos de texto estão vazios!")
-        elif(nome == "cadastros"):
+            caminho = self.buscar_arquivo()
             # Conectando ao banco de dados
             conexao = sqlite3.connect('banco de dados.db')
             cursor = conexao.cursor()
 
-            with open('cadastros.csv') as arquivo:
+            with open(caminho) as arquivo:
                 linhas = arquivo.readlines()
                 for linha in linhas:
                     dados = linha.strip().split(",")
@@ -578,7 +576,6 @@ class Widget(QWidget):
         workbook.save('Planilhas/planilha_' + data_formatada + '.xlsx')
 
         print("Planilha concluída.")
-
 
     def process_serial_data(self,serial_port):
         data_dict = {}
