@@ -25,6 +25,7 @@ from docx.shared import Inches
 from docx.enum.shape import WD_INLINE_SHAPE
 from openpyxl.styles import Alignment,Border, Side
 from ast import literal_eval
+from PySide6.QtGui import QIcon
 
 class Experimento():
     def __init__(self,nome,id):
@@ -443,7 +444,6 @@ class Widget(QWidget):
             # Configurar o gráfico
             plt.figure(figsize=(10, 6))  # Define o tamanho do gráfico
             tempos = literal_eval(resultados[0])
-            print(tempos)
             plt.bar(rotulos, tempos, color='skyblue')  # Gráfico de barras com cor personalizada
 
             # Adicionar título e rótulos dos eixos
@@ -462,22 +462,25 @@ class Widget(QWidget):
                     paragraph.add_run().add_picture('grafico_temp.png', width=Inches(3))
 
 
-
             # Atualizando cada um dos tempos
-            exercicios = ["tempo.corrida1", "tempo.corrida2", "tempo.corrida3", "tempo.corrida4", "tempo.corrida5", \
-            "tempo.corrida6", "tempo.corrida7", "tempo.corrida8","tempo.burpee", "tempo.lunge", "tempo.farmer.walk", \
+            exercicios = ["tempo.corrida","tempo.burpee", "tempo.lunge", "tempo.farmer.walk", \
             "tempo.abdominal", "tempo.jump.squat", "tempo.medball.alto",\
             "tempo.medball.solo", "tempo.terra.remada"]
+            tempo_total = 0
             for paragraph in doc.paragraphs:
                 for tempo, exercicio in zip(resultados,exercicios):
-                    print(tempo)
-                    if(exercicio in paragraph.text):
-                        paragraph.text = paragraph.text.replace(exercicio,str(tempo[0]))
-
-
+                    tempo_convertido = literal_eval(tempo)
+                    if(exercicio == "tempo.corrida"):
+                        if(exercicio in paragraph.text):
+                            corrida_total = sum(tempo_convertido)/8
+                            tempo_total += corrida_total
+                            paragraph.text = paragraph.text.replace(exercicio,str(corrida_total))
+                    else:
+                        if(exercicio in paragraph.text):
+                            paragraph.text = paragraph.text.replace(exercicio,str(tempo_convertido[0]))
+                            tempo_total += tempo_convertido[0]
 
             # Atualizando o tempo total
-            tempo_total = 2605#sum(resultados)
             for paragraph in doc.paragraphs:
                 if("tempo.total" in paragraph.text):
                     paragraph.text = paragraph.text.replace("tempo.total",str(tempo_total))
@@ -510,8 +513,7 @@ class Widget(QWidget):
         exercicios = [
             "Burpee", "Lunge", "Farmer_Walk",
             "Abdominal", "Jump_Squat",
-            "Medball_Alto", "Medball_Solo", "Terra + Remada", "Corrida", "Tempo Total"
-        ]
+            "Medball_Alto", "Medball_Solo", "Terra + Remada", "Corrida", "Tempo Total"]
 
         # Adiciona dados na planilha
         sheet['A1'] = 'Nome'
@@ -761,6 +763,10 @@ class Widget(QWidget):
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     widget = Widget()
+
+    # Adicionando ícone à barra de tarefas
+    widget.setWindowIcon(QIcon("imagens/FTG.ico"))  # Substitua pelo caminho do seu ícone
+
     widget.show()
     sys.exit(app.exec())
 
