@@ -19,6 +19,8 @@ import serial
 import serial.tools.list_ports
 import time
 import matplotlib.pyplot as plt
+import tkinter as tk
+from tkinter import filedialog
 from docx.shared import Inches
 from docx.enum.shape import WD_INLINE_SHAPE
 
@@ -29,14 +31,14 @@ class Experimento():
         self.cont_corridas = 0
         self.exercicios = {
             "Corrida": [0] * 8,
-            "Burpee": 0,
-            "Lunge": 0,
-            "Farmer_Walk": 0,
-            "Abdominal": 0,
-            "Jump_Squat": 0,
-            "Medball_Alto": 0,
-            "Medball_Solo": 0,
-            "Terra_Remada": 0,
+            "Burpee": [0] * 16,
+            "Lunge": [0] * 16,
+            "Farmer_Walk": [0] * 16,
+            "Abdominal": [0] * 16,
+            "Jump_Squat": [0] * 16,
+            "Medball_Alto": [0] * 16,
+            "Medball_Solo": [0] * 16,
+            "Terra_Remada": [0] * 16,
 
         }
         self.ID_Pessoa = 0
@@ -76,6 +78,27 @@ class Experimento():
         conexao.close()
 
 
+    def _atualizar_valores_exercicio(self, nome_exercicio, valores, i):
+        """
+        Atualiza os valores do exercício no dicionário self.exercicios.
+        """
+        if nome_exercicio == "Corrida":
+            for v in range(len(valores)):
+                if v > 7:
+                    break
+                else:
+                    self.exercicios[nome_exercicio][v] = valores[v][0]
+        else:
+            self.exercicios[nome_exercicio][0] = valores[i][0]
+            for v in range(len(valores[i][1])):
+                if v > 14:
+                    break
+                else:
+                    self.exercicios[nome_exercicio][v+1] = valores[i][1][v]
+
+
+
+
 class Widget(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -93,8 +116,10 @@ class Widget(QWidget):
         self.experimentos = []
         self.criar_experimentos()
         self.dicionario_exercicios = {}
-        self.criar_dicionario_exercicios()
-        self.ui.pushButtonBancoDados.clicked.connect(self.enviar_informacoes_banco_dados)
+        self.dicionario_exercicios2 = {}
+        self.criar_dicionario_exercicios2()
+        #self.criar_dicionario_exercicios()
+        self.ui.pushButtonBancoDados.clicked.connect(self.enviar_informacoes_banco_dados2)
 
 
     def enviar_informacoes_banco_dados(self):
@@ -203,6 +228,125 @@ class Widget(QWidget):
         with open('log_serial.txt', 'w') as file:
             pass  # Não faz nada, apenas limpa o conteúdo
 
+
+    def enviar_informacoes_banco_dados2(self):
+        # Itera sobre os dados em 'data.txt'
+        time_intervals = {}
+        with open('log_serial.txt') as arquivo:
+            linhas = arquivo.readlines()
+            # Processar os dados
+            dicionario = {}
+            for linha in linhas:
+                id_totem, id_pessoa, btn, time = map(int, linha.split(","))
+
+                if id_totem in self.dicionario_exercicios["Corrida"]:
+                    id_totem = max(self.dicionario_exercicios["Corrida"])
+
+                # Inicializa a estrutura aninhada, se necessário
+                if id_pessoa not in dicionario:
+                    dicionario[id_pessoa] = {}
+                if id_totem not in dicionario[id_pessoa]:
+                    dicionario[id_pessoa][id_totem] = {"intervalos": [], "pendentes": {"btn_3": [], "btn_4": []}}
+
+                # Referências às estruturas
+                estrutura = dicionario[id_pessoa][id_totem]
+
+                if btn == 1:
+                    # Adiciona novo intervalo com timestamp inicial
+                    estrutura["intervalos"].append({"inicio": time, "fim": None, "btn_3": [], "btn_4": []})
+                elif btn == 2:
+                    # Finaliza o último intervalo aberto
+                    for intervalo in reversed(estrutura["intervalos"]):
+                        if intervalo["fim"] is None:
+                            intervalo["fim"] = time
+                            # Adiciona os tempos pendentes de btn_3 e btn_4 ao intervalo
+                            intervalo["btn_3"].extend(estrutura["pendentes"]["btn_3"])
+                            intervalo["btn_4"].extend(estrutura["pendentes"]["btn_4"])
+                            estrutura["pendentes"]["btn_3"].clear()
+                            estrutura["pendentes"]["btn_4"].clear()
+                            break
+                elif btn == 3:
+                    # Adiciona tempo em ms ao botão 3
+                    if estrutura["intervalos"] and estrutura["intervalos"][-1]["fim"] is None:
+                        estrutura["intervalos"][-1]["btn_3"].append(time)
+                    else:
+                        estrutura["pendentes"]["btn_3"].append(time)
+                elif btn == 4:
+                    # Adiciona tempo em ms ao botão 4
+                    if estrutura["intervalos"] and estrutura["intervalos"][-1]["fim"] is None:
+                        estrutura["intervalos"][-1]["btn_4"].append(time)
+                    else:
+                        estrutura["pendentes"]["btn_4"].append(time)
+
+            # Montar a estrutura final
+            resultado_final = {}
+
+            for id_pessoa, totems in dicionario.items():
+                resultado_final[id_pessoa] = {}
+                for id_totem, estrutura in totems.items():
+                    intervalos_processados = []
+                    for intervalo in estrutura["intervalos"]:
+                        if intervalo["inicio"] is not None and intervalo["fim"] is not None:
+                            diferenca_tempo = intervalo["fim"] - intervalo["inicio"]
+                            intervalos_processados.append((diferenca_tempo, intervalo["btn_3"] + intervalo["btn_4"]))
+                    resultado_final[id_pessoa][id_totem] = intervalos_processados
+
+
+            # Itera sobre cada IDPESSOA no resultado_final
+            for id_pessoa, totens in resultado_final.items():
+                # Itera sobre os totens para cada pessoa
+                for id_totem, valores in totens.items():
+                    for indice, exp in enumerate(self.experimentos):
+                        if(id_pessoa == exp._id):
+                            # Verifica quais exercícios estão associados ao IDTOTEM, utilizando dicionario_exercicios2
+                            if id_totem in self.dicionario_exercicios2:
+                                cnt_ = 0
+                                for nome_exercicio in self.dicionario_exercicios2[id_totem]:
+                                    # Atualiza os exercícios da pessoa com os dados de tempos
+                                    self.experimentos[indice]._atualizar_valores_exercicio(nome_exercicio, valores, cnt_)
+                                    cnt_ = cnt_ + 1
+
+
+            for exp in self.experimentos:
+                print(exp)
+
+        conexao = sqlite3.connect('banco de dados.db')
+        cursor = conexao.cursor()
+
+        for exp in self.experimentos:
+            # Conectando ao banco de dados
+
+
+            # Obtendo o ID a partir do nome
+
+            # Inserir dados diários
+            tempos_exercios = [0]
+            tempos_exercios = tempos_exercios*16
+
+            #Tempo_total = Corrida + Burpee + Lunge + Farmer_Walk + Abdominal + Jump_Squat + Medball_Alto + \
+            #Medball_Solo + Terra_remada
+
+            cursor.execute("INSERT INTO experimentos (ID_Pessoa, Data, Burpee, Lunge, Farmer_Walk,\
+            Abdominal, Jump_Squat, Medball_Alto, Medball_Solo, Terra_remada,Corrida1, Corrida2,\
+            Corrida3,Corrida4,Corrida5,Corrida6,Corrida7,Corrida8) \
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", \
+            (exp.ID_Pessoa,exp.data,exp.exercicios["Burpee"][0],exp.exercicios["Lunge"][0],exp.exercicios["Farmer_Walk"][0],\
+            exp.exercicios["Abdominal"][0],exp.exercicios["Jump_Squat"][0], exp.exercicios["Medball_Alto"][0],\
+            exp.exercicios["Medball_Solo"][0],exp.exercicios["Terra_Remada"][0],exp.exercicios["Corrida"][0],\
+            exp.exercicios["Corrida"][1],exp.exercicios["Corrida"][2],exp.exercicios["Corrida"][3],\
+            exp.exercicios["Corrida"][4],exp.exercicios["Corrida"][5],exp.exercicios["Corrida"][6],\
+            exp.exercicios["Corrida"][7]))
+
+
+        # Confirmar a alteração
+        conexao.commit()
+
+        # Fechar a conexão
+        conexao.close()
+
+        with open('log_serial.txt', 'w') as file:
+            pass  # Não faz nada, apenas limpa o conteúdo
+
     def cadastro(self):
         nome = self.ui.lineEditNome.text()
         idade = self.ui.lineEditIdade.text()
@@ -250,7 +394,6 @@ class Widget(QWidget):
             self.ui.labelAvisoCadastro.setStyleSheet("QLabel {color : blue; }")
             self.ui.labelAvisoCadastro.setText("O participante foi cadastrado na base de dados.")
             self.atualizar_nomes_participantes()
-
 
     def gerar_relatorio(self):
         #Aquisição do nome do aprticipante escolhido
@@ -561,6 +704,49 @@ class Widget(QWidget):
             linhas = arquivo.readlines()
             for linha in linhas:
                 self.dicionario_exercicios[linha.split(",")[0]] = int(linha.split(",")[1])
+
+    def criar_dicionario_exercicios2(self):
+        # Lê o arquivo e processa as linhas
+        with open('Configuração dos totens.txt') as arquivo:
+            linhas = arquivo.readlines()
+            for linha in linhas:
+                elementos = linha.strip().split(",")
+                # Preenche self.dicionario_exercicios
+                nome = elementos[0]
+                chave = int(elementos[1])
+                # Verifica se o nome já existe em self.dicionario_exercicios
+                if nome in self.dicionario_exercicios:
+                    valor_atual = self.dicionario_exercicios[nome]
+                    if isinstance(valor_atual, tuple):
+                        self.dicionario_exercicios[nome] = (*valor_atual, chave)
+                    else:
+                        self.dicionario_exercicios[nome] = (valor_atual, chave)
+                else:
+                    self.dicionario_exercicios[nome] = chave
+                # Preenche dicionario_por_chave
+                if chave not in self.dicionario_exercicios2:
+                    self.dicionario_exercicios2[chave] = set()
+                self.dicionario_exercicios2[chave].add(nome)
+
+
+    def buscar_arquivo(self):
+        # Configura o root do Tkinter
+        root = tk.Tk()
+        root.withdraw()  # Oculta a janela principal
+
+        # Abre o explorador de arquivos para selecionar um arquivo
+        caminho_arquivo = filedialog.askopenfilename(
+            title="Selecione um arquivo",
+            filetypes=[("Todos os arquivos", "*.*"),  # Mostra todos os arquivos
+                       ("Arquivos de texto", "*.csv")]  # Exemplo: arquivos csv
+        )
+
+        if caminho_arquivo:  # Verifica se um arquivo foi selecionado
+            print(f"Arquivo selecionado: {caminho_arquivo}")
+        else:
+            print("Nenhum arquivo foi selecionado.")
+
+        return caminho_arquivo
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
