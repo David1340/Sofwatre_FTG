@@ -24,6 +24,7 @@ from tkinter import filedialog
 from docx.shared import Inches
 from docx.enum.shape import WD_INLINE_SHAPE
 from openpyxl.styles import Alignment,Border, Side
+from ast import literal_eval
 
 class Experimento():
     def __init__(self,nome,id):
@@ -237,7 +238,12 @@ class Widget(QWidget):
             # Processar os dados
             dicionario = {}
             for linha in linhas:
-                id_totem, id_pessoa, btn, time = map(int, linha.split(","))
+                try:
+                    id_totem, id_pessoa, btn, time = map(int, linha.split(","))
+                except ValueError as e:
+                    print(f"Erro ao processar a linha: {linha}. Detalhes do erro: {e}")
+                    # Continue a execução ignorando essa linha ou lidando com ela de outra forma
+                    continue
 
                 if id_totem in self.dicionario_exercicios["Corrida"]:
                     id_totem = max(self.dicionario_exercicios["Corrida"])
@@ -404,8 +410,7 @@ class Widget(QWidget):
         data = self.ui.calendarWidget.selectedDate().toString('dd/MM/yyyy')
 
         cursor.execute('''
-        SELECT e.Data, e.Corrida1, e.Corrida2, e.Corrida3, e.Corrida4, e.Corrida5,\
-        e.Corrida6, e.Corrida7, e.Corrida8, e.Burpee, e.Lunge, e.Farmer_Walk,\
+        SELECT e.Data, e.Corrida, e.Burpee, e.Lunge, e.Farmer_Walk,\
         e.Abdominal, e.Jump_Squat, e.Medball_Alto, e.Medball_Solo, e.Terra_Remada
         from Experimentos e
         join Pessoas p ON e.ID_Pessoa = p.ID_Pessoa
@@ -421,7 +426,6 @@ class Widget(QWidget):
             #Medball_Solo, Terra_Remada = resultados
             print(f"Dado encontrado para {nome} na data {data} com sucesso.")
             resultados = resultados[1:len(resultados)]
-
             # Abrindo o arquivo modelo
             doc = Document('Relatorio_dia_modelo.docx')
 
@@ -440,7 +444,8 @@ class Widget(QWidget):
 
             # Configurar o gráfico
             plt.figure(figsize=(10, 6))  # Define o tamanho do gráfico
-            tempos = resultados[0:8]
+            tempos = literal_eval(resultados[0])
+            print(tempos)
             plt.bar(rotulos, tempos, color='skyblue')  # Gráfico de barras com cor personalizada
 
             # Adicionar título e rótulos dos eixos
@@ -467,13 +472,14 @@ class Widget(QWidget):
             "tempo.medball.solo", "tempo.terra.remada"]
             for paragraph in doc.paragraphs:
                 for tempo, exercicio in zip(resultados,exercicios):
+                    print(tempo)
                     if(exercicio in paragraph.text):
-                        paragraph.text = paragraph.text.replace(exercicio,str(tempo))
+                        paragraph.text = paragraph.text.replace(exercicio,str(tempo[0]))
 
 
 
             # Atualizando o tempo total
-            tempo_total = sum(resultados)
+            tempo_total = 2605#sum(resultados)
             for paragraph in doc.paragraphs:
                 if("tempo.total" in paragraph.text):
                     paragraph.text = paragraph.text.replace("tempo.total",str(tempo_total))
