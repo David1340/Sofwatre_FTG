@@ -23,7 +23,7 @@ import tkinter as tk
 from tkinter import filedialog
 from docx.shared import Inches
 from docx.enum.shape import WD_INLINE_SHAPE
-
+from openpyxl.styles import Alignment,Border, Side
 
 class Experimento():
     def __init__(self,nome,id):
@@ -503,26 +503,14 @@ class Widget(QWidget):
         workbook = Workbook()
         sheet = workbook.active
 
+        exercicios = [
+            "Burpee", "Lunge", "Farmer_Walk",
+            "Abdominal", "Jump_Squat",
+            "Medball_Alto", "Medball_Solo", "Terra + Remada", "Corrida", "Tempo Total"
+        ]
+
         # Adiciona dados na planilha
         sheet['A1'] = 'Nome'
-        sheet['B1'] = 'Burpee'
-        sheet['C1'] = 'Lunge'
-        sheet['D1'] = 'Farmer_Walk'
-        sheet['E1'] = 'Abdominal'
-        sheet['F1'] = 'Jump_Squat'
-        sheet['G1'] = 'Medball_Alto'
-        sheet['H1'] = 'Medball_Solo'
-        sheet['I1'] = 'Terra + Remada'
-        sheet['J1'] = 'Corrida1'
-        sheet['K1'] = 'Corrida2'
-        sheet['L1'] = 'Corrida3'
-        sheet['M1'] = 'Corrida4'
-        sheet['N1'] = 'Corrida5'
-        sheet['O1'] = 'Corrida6'
-        sheet['P1'] = 'Corrida7'
-        sheet['Q1'] = 'Corrida8'
-        sheet['R1'] = 'Corida Total'
-        sheet['S1'] = 'Tempo Total'
         # Conectar ao banco de dados
         conexao = sqlite3.connect('Banco de dados.db')
         cursor = conexao.cursor()
@@ -535,13 +523,23 @@ class Widget(QWidget):
         for i,linha in enumerate(resultados):
             corridas = 0
             tempo_total = 0
+            sum_tamanhos = 0
             for i2,valor in enumerate(linha[3:len(linha)]):
-                sheet[chr(66+i2) + str(i + 2)] = str(valor)
-                tempo_total = tempo_total + valor
-                if(i2 >= 8):
-                    corridas = corridas + valor
-            sheet['R' + str(i + 2)] = str(corridas)
-            sheet['S' + str(i + 2)] = tempo_total
+                result = valor.strip("[]").split(",")
+
+                sheet.merge_cells(start_row=1,start_column=2+sum_tamanhos,end_row=1,end_column=sum_tamanhos+len(result)+1)
+                sheet.cell(row=1, column=2+sum_tamanhos).value = exercicios[i2]
+                sheet.cell(row=1, column=2+sum_tamanhos).alignment = Alignment(horizontal='center', vertical='center')
+
+                for i3,valor2 in enumerate(result):
+                    sheet.cell(row=i+2,column=i3+sum_tamanhos+2).value = float(valor2)
+
+                sum_tamanhos += len(result)
+                if(i2 == 8):
+                    #corridas = sum(result)
+                    print(corridas)
+            #sheet['R' + str(i + 2)] = str(corridas)
+            #sheet['S' + str(i + 2)] = tempo_total
 
             cursor.execute('''
             SELECT p.Nome from Pessoas p WHERE p.Id_Pessoa = ?
@@ -556,6 +554,19 @@ class Widget(QWidget):
 
         # Formatar o objeto datetime em uma nova string com o formato desejado
         data_formatada = data_objeto.strftime("%d-%m-%Y")
+
+        # Define os estilos de borda
+        thin_border = Border(
+            left=Side(style='thin'),
+            right=Side(style='thin'),
+            top=Side(style='thin'),
+            bottom=Side(style='thin')
+        )
+
+        # Aplica as bordas em toda a planilha
+        for row in sheet.iter_rows(min_row=1, max_row=sheet.max_row, min_col=1, max_col=sheet.max_column):
+            for cell in row:
+                cell.border = thin_border
 
         # Salva a planilha
         workbook.save('Planilhas/planilha_' + data_formatada + '.xlsx')
