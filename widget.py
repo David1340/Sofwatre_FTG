@@ -327,15 +327,11 @@ class Widget(QWidget):
             #Medball_Solo + Terra_remada
 
             cursor.execute("INSERT INTO experimentos (ID_Pessoa, Data, Burpee, Lunge, Farmer_Walk,\
-            Abdominal, Jump_Squat, Medball_Alto, Medball_Solo, Terra_remada,Corrida1, Corrida2,\
-            Corrida3,Corrida4,Corrida5,Corrida6,Corrida7,Corrida8) \
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", \
-            (exp.ID_Pessoa,exp.data,exp.exercicios["Burpee"][0],exp.exercicios["Lunge"][0],exp.exercicios["Farmer_Walk"][0],\
-            exp.exercicios["Abdominal"][0],exp.exercicios["Jump_Squat"][0], exp.exercicios["Medball_Alto"][0],\
-            exp.exercicios["Medball_Solo"][0],exp.exercicios["Terra_Remada"][0],exp.exercicios["Corrida"][0],\
-            exp.exercicios["Corrida"][1],exp.exercicios["Corrida"][2],exp.exercicios["Corrida"][3],\
-            exp.exercicios["Corrida"][4],exp.exercicios["Corrida"][5],exp.exercicios["Corrida"][6],\
-            exp.exercicios["Corrida"][7]))
+            Abdominal, Jump_Squat, Medball_Alto, Medball_Solo, Terra_remada,Corrida) \
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", \
+            (exp.ID_Pessoa,exp.data,str(exp.exercicios["Burpee"]),str(exp.exercicios["Lunge"]),str(exp.exercicios["Farmer_Walk"]),\
+            str(exp.exercicios["Abdominal"]),str(exp.exercicios["Jump_Squat"]), str(exp.exercicios["Medball_Alto"]),\
+            str(exp.exercicios["Medball_Solo"]),str(exp.exercicios["Terra_Remada"]),str(exp.exercicios["Corrida"])))
 
 
         # Confirmar a alteração
