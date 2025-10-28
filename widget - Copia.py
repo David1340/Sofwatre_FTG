@@ -89,14 +89,14 @@ class Experimento():
                 if v > 7:
                     break
                 else:
-                    self.exercicios[nome_exercicio][v] = valores[v][1]
+                    self.exercicios[nome_exercicio][v] = valores[v][0]
         else:
-            self.exercicios[nome_exercicio][0] = valores[i][1]
-            for v in range(len(valores[i][2])):
+            self.exercicios[nome_exercicio][0] = valores[i][0]
+            for v in range(len(valores[i][1])):
                 if v > 14:
                     break
                 else:
-                    self.exercicios[nome_exercicio][v+1] = valores[i][2][v]
+                    self.exercicios[nome_exercicio][v+1] = valores[i][1][v]
 
 
 
@@ -308,16 +308,14 @@ class Widget(QWidget):
                             if(id_pessoa == exp._id):
                                 # Verifica quais exercícios estão associados ao IDTOTEM, utilizando dicionario_exercicios2
                                 if id_totem in self.dicionario_exercicios2:
-                                    cnt_ = 0
+                                    cnt_ = 1
                                     for nome_exercicio in self.dicionario_exercicios2[id_totem]:
-                                        #if nome_exercicio == "Corrida":
-                                        print(cnt_)
+                                        if nome_exercicio == "Corrida":
+                                            print(cnt_)
                                         # Atualiza os exercícios da pessoa com os dados de tempos
-                                        print(valores)
-                                        print(valores[cnt_])
-                                        data = date.fromtimestamp(valores[cnt_][0])
-                                        self.experimentos[indice].data = data.strftime("%d/%m/%Y")
-                                        print(self.experimentos[indice].data)
+                                        data = datetime.fromtimestamp(valores[0][0])
+                                        data.strftime("%d/%m/%Y")
+                                        self.experimentos[indice].data = data
                                         self.experimentos[indice]._atualizar_valores_exercicio(nome_exercicio, valores, cnt_)
                                         cnt_ = cnt_ + 1
 
@@ -347,7 +345,7 @@ class Widget(QWidget):
                 (exp.ID_Pessoa,exp.data,str(exp.exercicios["Burpee"]),str(exp.exercicios["Lunge"]),str(exp.exercicios["Farmer_Walk"]),\
                 str(exp.exercicios["Abdominal"]),str(exp.exercicios["Jump_Squat"]), str(exp.exercicios["Medball_Alto"]),\
                 str(exp.exercicios["Medball_Solo"]),str(exp.exercicios["Terra_Remada"]),str(exp.exercicios["Corrida"])))
-                print(exp.data)
+
 
             # Confirmar a alteração
             conexao.commit()
@@ -357,8 +355,8 @@ class Widget(QWidget):
             self.ui.Atualizacoes.setText("Informaçoes enviadas ao Banco de dados com sucesso.")
             with open('log_serial.txt', 'w') as file:
                 pass  # Não faz nada, apenas limpa o conteúdo
-        except ValueError  as erro:
-            self.ui.Atualizacoes.setText("Falha ao enviar as informaçoes ao Banco de dados. \nTente novamente.\n",erro)
+        except:
+            self.ui.Atualizacoes.setText("Falha ao enviar as informaçoes ao Banco de dados. \nTente novamente.")
 
     def cadastro(self):
         nome = self.ui.lineEditNome.text()
@@ -427,28 +425,14 @@ class Widget(QWidget):
         ''', (nome,data))
 
         # Obter o resultado da consulta
-        #resultados = cursor.fetchone()
-        resultados = cursor.fetchall()
+        resultados = cursor.fetchone()
 
         # Exibir o resultado
         if resultados:
             #Data, Corrida, Burpee, Lunge, Farmer_Walk, Abdominal, Jump_Squat, Medball_Alto,\
             #Medball_Solo, Terra_Remada = resultados
             print(f"Dado encontrado para {nome} na data {data} com sucesso.")
-
-        resultado_final = [0]*10
-        for resultado in resultados:
-            resultado = resultado[1:]
-            print(resultado)
-            for i in range(len(resultado)):
-                print(resultado[i])
-                for j in range(len(resultado[i])):
-                    resultado_final[i] += resultado[i][j]
-
-        # Exibir o resultado
-        if resultados:
-            #Data, Corrida, Burpee, Lunge, Farmer_Walk, Abdominal, Jump_Squat, Medball_Alto,\
-            #Medball_Solo, Terra_Remada = resultados            #resultado_final = resultado_final[1:len(resultado_final)]
+            resultados = resultados[1:len(resultados)]
             # Abrindo o arquivo modelo
             doc = Document('Relatorio_dia_modelo.docx')
 
@@ -467,7 +451,7 @@ class Widget(QWidget):
 
             # Configurar o gráfico
             plt.figure(figsize=(10, 6))  # Define o tamanho do gráfico
-            tempos = literal_eval(resultado_final[0])
+            tempos = literal_eval(resultados[0])
             plt.bar(rotulos, tempos, color='skyblue')  # Gráfico de barras com cor personalizada
 
             # Adicionar título e rótulos dos eixos
@@ -492,7 +476,7 @@ class Widget(QWidget):
             "tempo.medball.solo", "tempo.terra.remada"]
             tempo_total = 0
             for paragraph in doc.paragraphs:
-                for tempo, exercicio in zip(resultado_final,exercicios):
+                for tempo, exercicio in zip(resultados,exercicios):
                     tempo_convertido = literal_eval(tempo)
                     if(exercicio == "tempo.corrida"):
                         if(exercicio in paragraph.text):

@@ -1,6 +1,2 @@
-Abdias,5
-Abraao,6
-Bruno,3
-Carlos,4
 David Oliveira Santos,1
-Idel,2
+Rodrigo Passos,4
